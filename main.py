@@ -14,7 +14,7 @@ import os
 import argparse
 
 from models import *
-from utils import progress_bar
+from utils import progress_bar,  init_params
 
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
@@ -51,7 +51,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 # Model
 print('==> Building model..')
 # net = VGG('VGG19')
-net = ResNet18()
+# net = ResNet18()
 # net = PreActResNet18()
 # net = GoogLeNet()
 # net = DenseNet121()
@@ -62,6 +62,8 @@ net = ResNet18()
 # net = ShuffleNetG2()
 # net = SENet18()
 # net = ShuffleNetV2(1)
+net = NiN()
+init_params(net)
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -75,6 +77,9 @@ if args.resume:
     net.load_state_dict(checkpoint['net'])
     best_acc = checkpoint['acc']
     start_epoch = checkpoint['epoch']
+
+total_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
+print('Number of trainable parameters {}'.format(total_params))
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
@@ -102,7 +107,8 @@ def train(epoch):
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
-    scheduler.step(train_loss/(batch_idx+1))
+    #scheduler.step(train_loss/(batch_idx+1))
+    print("Learning rate {}".format(optimizer.param_groups[0]['lr']))
 
 def test(epoch):
     global best_acc
