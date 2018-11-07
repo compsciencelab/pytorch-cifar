@@ -98,7 +98,7 @@ class GoogLeNet(nn.Module):
         return out
 
 
-def test():
+def _test():
     net = GoogLeNet()
     x = torch.randn(1,3,32,32)
     y = net(x)

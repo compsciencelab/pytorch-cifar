@@ -100,7 +100,7 @@ def ShuffleNetG3():
     return ShuffleNet(cfg)
 
 
-def test():
+def _test():
     net = ShuffleNetG2()
     x = torch.randn(1,3,32,32)
     y = net(x)

@@ -152,7 +152,7 @@ configs = {
 }
 
 
-def test():
+def _test():
     net = ShuffleNetV2(net_size=0.5)
     x = torch.randn(3, 3, 32, 32)
     y = net(x)

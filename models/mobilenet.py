@@ -52,7 +52,7 @@ class MobileNet(nn.Module):
         return out
 
 
-def test():
+def _test():
     net = MobileNet()
     x = torch.randn(1,3,32,32)
     y = net(x)
