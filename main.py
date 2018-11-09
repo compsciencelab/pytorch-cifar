@@ -22,7 +22,6 @@ parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 args = parser.parse_args()
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
@@ -64,6 +63,7 @@ net = DenseNet121()
 # net = ShuffleNetV2(1)
 # net = NiN()
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -79,7 +79,7 @@ if args.resume:
     start_epoch = checkpoint['epoch']
 else:
     init_params(net)
-    
+
 total_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
 print('Number of trainable parameters {}'.format(total_params))
 
