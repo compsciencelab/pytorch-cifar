@@ -37,7 +37,7 @@ def init_params(net):
             init.constant_(m.weight, 1)
             init.constant_(m.bias, 0)
         elif isinstance(m, nn.Linear):
-            init.normal(m.weight, std=1e-3)
+            init.normal_(m.weight, std=1e-3)
             if isinstance(m.bias,torch.Tensor):
                 init.constant_(m.bias, 0)
 

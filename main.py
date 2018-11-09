@@ -54,7 +54,7 @@ print('==> Building model..')
 # net = ResNet18()
 # net = PreActResNet18()
 # net = GoogLeNet()
-# net = DenseNet121()
+net = DenseNet121()
 # net = ResNeXt29_2x64d()
 # net = MobileNet()
 # net = MobileNetV2()
@@ -62,8 +62,8 @@ print('==> Building model..')
 # net = ShuffleNetG2()
 # net = SENet18()
 # net = ShuffleNetV2(1)
-net = NiN()
-init_params(net)
+# net = NiN()
+
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
@@ -77,7 +77,9 @@ if args.resume:
     net.load_state_dict(checkpoint['net'])
     best_acc = checkpoint['acc']
     start_epoch = checkpoint['epoch']
-
+else:
+    init_params(net)
+    
 total_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
 print('Number of trainable parameters {}'.format(total_params))
 
@@ -107,7 +109,7 @@ def train(epoch):
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
-    #scheduler.step(train_loss/(batch_idx+1))
+    scheduler.step(train_loss/(batch_idx+1))
     print("Learning rate {}".format(optimizer.param_groups[0]['lr']))
 
 def test(epoch):
