@@ -7,7 +7,7 @@ class NiN(nn.Module):
     def __init__(self):
         super(NiN, self).__init__()
         self.classifer = nn.Sequential(
-                nn.Conv2d(3, 192, kernel_size=5, stride=1, padding=2),
+                nn.Conv2d(3, 192, kernel_size=3, stride=1, padding=1),
                 nn.ReLU(inplace=True),
                 nn.Conv2d(192, 160, kernel_size=1, stride=1, padding=0),
                 nn.ReLU(inplace=True),
@@ -16,7 +16,7 @@ class NiN(nn.Module):
                 nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
                 nn.Dropout(0.5),
 
-                nn.Conv2d(96, 192, kernel_size=5, stride=1, padding=2),
+                nn.Conv2d(96, 192, kernel_size=3, stride=1, padding=1),
                 nn.ReLU(inplace=True),
                 nn.Conv2d(192, 192, kernel_size=1, stride=1, padding=0),
                 nn.ReLU(inplace=True),
